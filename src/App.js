@@ -9,17 +9,37 @@ import 'bulma/css/bulma.css'
 
 
 
-  class AllPlanets extends Comment{
-    constructor(planets){
+
+
+
+
+  class PlanetService extends Component{
+    constructor(){
       super();
-      this.state={Planets:planets};
+      this.state={StarWarsData:null};
+      this.state={NextPage:"https://swapi.co/api/planets/?page=2"};
+      this.state={Previous:null};
+      this.state={ApiURL:"https://swapi.co/api/planets"};
+  
+    }
+    
+    
+  
+    componentDidMount(){
+      
+      let ApiURL = this.state.ApiURL;
+      fetch(ApiURL)
+      .then(res=>res.json())
+      .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next})});
       
     }
-
-
+    
+  
+    
     render(){
    
-      const StarWarsData=this.state.StarWarsData;
+      let StarWarsData=this.state.StarWarsData;
+      
       if(!StarWarsData) return <div>Loading...</div>
      
       
@@ -66,61 +86,6 @@ import 'bulma/css/bulma.css'
   
         
       }
-
-
-  }
-
-
-
-  class PlanetService extends Component{
-    constructor(){
-      super();
-      this.state={StarWarsData:null};
-      this.state={NextPage:"https://swapi.co/api/planets/?page=2"};
-      this.state={Previous:null};
-      this.state={ApiURL:"https://swapi.co/api/planets"};
-  
-    }
-    
-    
-  
-    componentDidMount(){
-      
-      let ApiURL = this.state.ApiURL;
-      fetch(ApiURL)
-      .then(res=>res.json())
-      .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next})});
-      
-    }
-    
-  
-    
-  render(){
-  
-  
-  
-    return(
-      <div>
-      <AllPlanets/>
-      <button 
-                  onClick={() => {
-                  apiurl=this.state.ApiURL;
-                  if(this.state.NextPage)
-                  {
-                 
-                    fetch(apiurl)
-                    .then(res=>res.json())
-                    .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next})});
-                   
-                  
-                  }
-                  
-                  }}>
-                  Next
-      </button>
-      </div>
-    );
-  }
           
         
       
