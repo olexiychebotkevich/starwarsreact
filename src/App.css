@@ -26,6 +26,17 @@
   color: #61dafb;
 }
 
+.card .card-header {
+  background-color:gray;
+}
+
+.card .card-content {
+  background-color:black;
+}
+p,.card-header p{
+  color: yellow;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

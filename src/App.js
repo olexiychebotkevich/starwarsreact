@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import 'bulma/css/bulma.css'
+import '../node_modules/bulma/css/bulma.css'
 
 
   class PlanetService extends Component{
@@ -41,26 +41,31 @@ import 'bulma/css/bulma.css'
      
       
         return (
-          <div>
-         
+         <div className="columns is-centered ">
+         <div className="column is-5 is-half">
           {
            StarWarsData.map((planet, index) => (
-             
-          <div class="card">
+            <div class="card">
+            <header class="card-header">
+            <p className="card-header-title is-centered">Name: {planet.name}</p>
+            </header>
             <div class="card-content">
-             <p>Name: {planet.name}</p>
+            <div class="content">
              <p>Orbital period: {planet.orbital_period}</p>
              <p>Rotation period: {planet.rotation_period}</p>
              <p>Planet diameter: {planet.diameter}</p>
              <p>Planet climate: {planet.climate}</p>
              <p>Planet gravity: {planet.gravity}</p>
              <p>planet.population: {planet.population}</p>
+              </div>
             </div>
-  
+            <footer class="card-footer">
+              
+            </footer>
           </div>
-                          
-            ))}
-        
+          
+                          ))}
+        </div>
        
   
   
@@ -106,22 +111,38 @@ import 'bulma/css/bulma.css'
            this.GetPlanets()
 
          }
+<div className="columns is-centered">
+  
 
-       <button 
-              onClick={() => {
-                this.NextPageFunc();
-              }}>
-              Next
-      </button>
+<div className="column is-offset-2">
+              <a href="#">
+                <button className="button is-dark" style={{ color: "yellow" }}
+                  onClick={() => {
+                    this.PreviousPageFunc();
+                  }}>
+                  Previous
+               </button>
+              </a>
+
+  </div>
+  
+  <div className="column is-offset-5">
+  
+              <a href="#">
+                <button className="button is-dark" style={{ color: "yellow" }}
+                  onClick={() => {
+                    this.NextPageFunc();
+                  }}>
+                  Next
+               </button>
+              </a> 
+              
+  </div>
+</div>
+       
 
 
-
-      <button  
-              onClick={() => {
-               this.PreviousPageFunc();
-              }}>
-              Previous
-      </button> 
+     
 
      </div>
        
@@ -146,11 +167,10 @@ class App extends Component {
 
      
       
-<div>
- 
+<div style={{backgroundImage: `url(${"https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/HOX7rov7iorrrmav/star-wars-starburst-hyper-space-effect_rse18xtu__F0000.png"})`}}>
   <PlanetService/>
              
-  </div>
+</div>
     );
   }
 }
