@@ -4,15 +4,6 @@ import './App.css';
 import 'bulma/css/bulma.css'
 
 
-
-
-
-
-
-
-
-
-
   class PlanetService extends Component{
     constructor(){
       super();
@@ -22,20 +13,26 @@ import 'bulma/css/bulma.css'
       this.state={ApiURL:"https://swapi.co/api/planets"};
       this.GetPlanets=this.GetPlanets.bind(this);
       this.NextPageFunc=this.NextPageFunc.bind(this);
-      this.PreviousPageFunc=this.NextPageFunc.bind(this);
+      this.PreviousPageFunc = this.PreviousPageFunc.bind(this);
+      this.GetDataFromApi = this.GetDataFromApi.bind(this);
   
     }
     
-    
+    GetDataFromApi(URL){
+     
+      if(URL){
+       fetch(URL)
+       .then(res=>res.json())
+       .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next});this.setState({Previous:json.previous})});
+      }
+     }
   
     componentDidMount(){
       
-      let ApiURL = this.state.ApiURL;
-      fetch(ApiURL)
-      .then(res=>res.json())
-      .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next});this.setState({Previous:json.previous})});
+    this.GetDataFromApi(this.state.ApiURL);
       
     }
+
     
     GetPlanets(){
       let StarWarsData=this.state.StarWarsData;
@@ -45,39 +42,26 @@ import 'bulma/css/bulma.css'
       
         return (
           <div>
-         <table key="table1" className="table is-bordered">
-          <thead key="trhead">
-          <tr>
-           <th key="th1">Name</th>
-           <th key="th2">Orbital Period</th>
-           <th key="th3">Rotation Period</th>
-           <th key="th4">Diameter</th>
-           <th key="th5">Climate</th>
-           <th key="th6">Gravity</th>
-           <th key="th7">Population</th>
-           </tr>
-         </thead>
-
-         <tbody key="tbody1">
-         {
-          
+         
+          {
            StarWarsData.map((planet, index) => (
              
-             <tr key={"trinbody"+parseInt(index)}> 
-              <td key="td1">{planet.name}</td>
-              <td key="td2">{planet.orbital_period}</td>
-              <td key="td3">{planet.rotation_period}</td>
-              <td key="td4">{planet.diameter}</td>
-              <td key="td5">{planet.climate}</td>
-              <td key="td6">{planet.gravity}</td>
-              <td key="td7">{planet.population}</td>
-             
-            </tr>
-        
+          <div class="card">
+            <div class="card-content">
+             <p>Name: {planet.name}</p>
+             <p>Orbital period: {planet.orbital_period}</p>
+             <p>Rotation period: {planet.rotation_period}</p>
+             <p>Planet diameter: {planet.diameter}</p>
+             <p>Planet climate: {planet.climate}</p>
+             <p>Planet gravity: {planet.gravity}</p>
+             <p>planet.population: {planet.population}</p>
+            </div>
+  
+          </div>
+                          
             ))}
         
-        </tbody>
-        </table>
+       
   
   
         
@@ -92,11 +76,7 @@ import 'bulma/css/bulma.css'
       if(this.state.NextPage)
       {
         
-        console.log("Next page func!!")
-        fetch(this.state.NextPage)
-        .then(res=>res.json())
-        .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next});this.setState({Previous:json.previous})});
-      
+        this.GetDataFromApi(this.state.NextPage);
         return(
           this.GetPlanets()
         );
@@ -107,16 +87,16 @@ import 'bulma/css/bulma.css'
     PreviousPageFunc(){
       if(this.state.Previous)
       {
-       
-        fetch(this.state.Previous)
-        .then(res=>res.json())
-        .then(json=>{ this.setState({StarWarsData:json.results});this.setState({NextPage:json.next});this.setState({Previous:json.previous})});
-      
+        this.GetDataFromApi(this.state.Previous);
         return(
           this.GetPlanets()
         );
       }
     }
+
+
+
+    
 
     
     render(){
@@ -129,32 +109,16 @@ import 'bulma/css/bulma.css'
 
        <button 
               onClick={() => {
-                if(this.state.NextPage)
-                {
-                  this.setState({ApiURL:this.state.NextPage});
-                  this.componentDidMount();
-                  return(
-                    this.GetPlanets()
-                  );
-                }  
-              
+                this.NextPageFunc();
               }}>
               Next
       </button>
 
 
 
-      <button 
+      <button  
               onClick={() => {
-                if(this.state.Previous)
-                {
-                  this.setState({ApiURL:this.state.Previous});
-                  this.componentDidMount();
-                  return(
-                    this.GetPlanets()
-                  );
-                }
-              
+               this.PreviousPageFunc();
               }}>
               Previous
       </button> 
@@ -166,10 +130,6 @@ import 'bulma/css/bulma.css'
       
       }
           
-        
-      
-      
-     
       
     }
 
@@ -183,10 +143,14 @@ class App extends Component {
   render() {
     return (
 
-      <div>
-            <PlanetService/>
+
+     
+      
+<div>
+ 
+  <PlanetService/>
              
-      </div>
+  </div>
     );
   }
 }
